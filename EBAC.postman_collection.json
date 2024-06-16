@@ -8,23 +8,37 @@
 	},
 	"item": [
 		{
-			"name": "cadastrar_usuario",
+			"name": "cadastrar_usuario_cenarios_positivos",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const resposta = pm.response.json();\r",
-							"pm.globals.set(\"id_usuario\", resposta._id);\r",
+							"//validar testes positivos \r",
 							"\r",
-							"pm.test(\"Validar o nome do personagem\", function(){\r",
-							"\tpm.expect(pm.response.text()).to.include(\"Este email já está sendo usado\");\r",
+							"//status code\r",
+							"pm.test(\"Validar status code\", function(){\r",
+							"\tif(pm.response.to.have.status(201)){\r",
+							"        const resposta = pm.response.json();\r",
+							"        pm.globals.set(\"id_usuario\", resposta._id);\r",
+							"    }\r",
 							"});\r",
 							"\r",
+							"//validar cadastro\r",
 							"pm.test(\"Validar o nome do personagem\", function(){\r",
 							"\tpm.expect(pm.response.text()).to.include(\"Cadastro realizado com sucesso\");\r",
 							"});\r",
 							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
 							""
 						],
 						"type": "text/javascript",
@@ -46,7 +60,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Carlos Counter \",\n  \"email\": \"carloscounter7@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"false\"\n}\n\n",
+					"raw": "{\n  \"nome\": \"Carlos Counter \",\n  \"email\": \"carloscounter@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"true\"\n}\n\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -68,15 +82,136 @@
 			"response": []
 		},
 		{
-			"name": "listar_usuarios_cadastrados",
+			"name": "cadastrar_usuario_canarios_negativos",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"//validar testes negativos\r",
+							"\r",
+							"//validar email\r",
 							"pm.test(\"Validar o nome do personagem\", function(){\r",
+							"\tpm.expect(pm.response.text()).to.include(\"Este email já está sendo usado\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Carlos Counter \",\n  \"email\": \"carloscounter@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"true\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar_usuarios_cadastrados_caenarios_positivos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validar testes positivos\r",
+							"\r",
+							"\r",
+							"//inclui id_usuario no globals\r",
+							"pm.test(\"Validar o nome do usuario\", function(){\r",
 							"\tpm.expect(pm.response.text()).to.include(pm.globals.get(\"id_usuario\"));\r",
 							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar_usuarios_cadastrados_cenarios_negativos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//valida testes negativos\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -96,7 +231,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"quantidade\": 1,\r\n  \"usuarios\": [\r\n    {\r\n      \"nome\": \"Fulano da Silva\",\r\n      \"email\": \"beltrano@qa.com.br\",\r\n      \"password\": \"teste\",\r\n      \"administrador\": \"true\",\r\n      \"_id\": \"0uxuPY0cbmQhpEz1\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -118,7 +253,32 @@
 			"response": []
 		},
 		{
-			"name": "buscar_usuario_por_id",
+			"name": "buscar_usuario_por_id_cenarios_positivos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validar cenarios positivos\r",
+							"\r",
+							"\r",
+							"//insere id_usuario no globals\r",
+							"pm.test(\"Validar o nome do personagem\", function(){\r",
+							"\tpm.expect(pm.response.text()).to.include(pm.globals.get(\"id_usuario\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -128,16 +288,11 @@
 					{
 						"key": "accept",
 						"value": "application/json"
-					},
-					{
-						"key": "_id",
-						"value": "{{id_usuario}}",
-						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -145,7 +300,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/usuarios/",
+					"raw": "http://localhost:3000/usuarios/?_id={{id_usuario}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -154,24 +309,111 @@
 					"path": [
 						"usuarios",
 						""
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "excluir_usuario",
+			"name": "buscar_usuario_por_id_cenarios_negativos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//valida testes negativos\r",
+							"\r",
+							"\r",
+							"//valida status code\r",
+							"pm.test(\"Validar status code\", function(){\r",
+							"\tif(pm.response.to.have.status(400)){\r",
+							"        pm.expect(pm.response.text()).to.include(\"Usuário não encontrado\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuarios/?_id={{id_usuario}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuarios",
+						""
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "excluir_usuario_cenarios_positivos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//valida testes positivos\r",
+							"\r",
+							"//valida status code\r",
+							"pm.test(\"Validar status code\", function(){\r",
+							"\tif(pm.response.to.have.status(200)){\r",
+							"        const resposta = pm.response.json();\r",
+							"        pm.expect(pm.response.text()).to.include(\"Registro excluído com sucesso\");\r",
+							"        pm.globals.set(\"id_usuario\", \" \");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "accept",
 						"value": "application/json"
-					},
-					{
-						"key": "_id",
-						"value": "{{id_usuario}}",
-						"type": "text"
 					}
 				],
 				"body": {
@@ -179,7 +421,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://localhost:3000/usuarios/",
+					"raw": "http://localhost:3000/usuarios/?_id={{id_usuario}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -188,24 +430,92 @@
 					"path": [
 						"usuarios",
 						""
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "editar_usuario",
+			"name": "excluir_usuario_cenarios_negativos",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Validar o nome do personagem\", function(){\r",
-							"\tpm.expect(pm.response.text()).to.include(\"Cadastro realizado com sucesso\");\r",
-							"});\r",
+							"//valida cenários negativos\r",
 							"\r",
-							"const resposta = pm.response.json();\r",
-							"pm.globals.set(\"id_usuario\", resposta._id);"
+							"\r",
+							"//valida status code\r",
+							"pm.test(\"Validar status code\", function(){\r",
+							"\tif(pm.response.to.have.status(400)){\r",
+							"        pm.expect(pm.response.text()).to.include(\"Não é permitido excluir usuário com carrinho cadastrado\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuarios/?_id={{id_usuario}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuarios",
+						""
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar_usuario_cenarios_positivos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validar testes positivos\r",
+							"\r",
+							"\r",
+							"//validar status code\r",
+							"pm.test(\"Validar status code\", function(){\r",
+							"\tif(pm.response.to.have.status(201)){\r",
+							"        const resposta = pm.response.json();\r",
+							"        pm.globals.set(\"id_usuario\", resposta._id);\r",
+							"        pm.expect(pm.response.text()).to.include(\"Registro alterado com sucesso\");\r",
+							"    }\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -222,16 +532,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
-					},
-					{
-						"key": "_id",
-						"value": "{{id_usuario}}",
-						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Carlos Counter\",\n  \"email\": \"novoemailcarloscounter2@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"true\"\n}",
+					"raw": "{\n  \"nome\": \"Carlos Counter editado\",\n  \"email\": \"carloscountereditado@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"false\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -239,7 +544,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/usuarios/0uxuPY0cbmQhpEz1",
+					"raw": "http://localhost:3000/usuarios/0uxuPY0cbmQhpEz1?_id={{id_usuario}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -248,6 +553,75 @@
 					"path": [
 						"usuarios",
 						"0uxuPY0cbmQhpEz1"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar_usuario_cenarios_negativos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validar testes negativos\r",
+							"\r",
+							"\r",
+							"//validar email\r",
+							"pm.test(\"Validar o nome do personagem\", function(){\r",
+							"\tpm.expect(pm.response.text()).to.include(\"Este email já está sendo usado\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Carlos Counter editado\",\n  \"email\": \"carloscountereditado@qa.com.br\",\n  \"password\": \"teste\",\n  \"administrador\": \"false\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuarios/0uxuPY0cbmQhpEz1?_id={{id_usuario}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuarios",
+						"0uxuPY0cbmQhpEz1"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{id_usuario}}"
+						}
 					]
 				}
 			},
